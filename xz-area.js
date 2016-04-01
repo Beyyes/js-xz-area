@@ -11,30 +11,47 @@ function xzArea(options) {
         k1 : options.k1 || 'name',
         k2 : options.k2 || 'cities'
     }
+    //默认选中
+    this.selected1 = options.selected1 || '';
+    this.selected2 = options.selected2 || '';
+
     this.checkOpts();
     var select1 = this.select1 = this.selector(this.options.select1);
     var select2 = this.select2 = this.selector(this.options.select2);
     this.initSelects();
-    var map2 = {};
+    //初始化select1
+    var map2 = this.map2 = {};
     for (var i in this.cityMap) {
         map2[this.cityMap[i][this.options.k1]] = this.cityMap[i];
         var opt = document.createElement('option')
         opt.value=opt.text=this.cityMap[i][this.options.k1];
+        if (opt.value == this.selected1) {
+            opt.selected = 'selected';
+            this.select(opt.value,this.selected2);
+        }
         this.select1.add(opt);
     }
     var that = this;
     this.select1.onchange = function(event){
-        while(select2.childNodes[1]) {
-            select2.remove(1);
-        }
         var val1 = event.target.value;
-        if (map2[val1][that.options.k2] != undefined) {
-            var val2arr = map2[val1][that.options.k2];
-            for (var j in val2arr) {
-                var opt2 = document.createElement('option');
-                opt2.value = opt2.text = val2arr[j];
-                select2.add(opt2);
+        that.select(val1);
+    }
+}
+
+//选中某个状态
+xzArea.prototype.select = function(val1,val2){
+    while(this.select2.childNodes[1]) {
+        this.select2.remove(1);
+    }
+    if (this.map2[val1][this.options.k2] != undefined) {
+        var val2arr = this.map2[val1][this.options.k2];
+        for (var j in val2arr) {
+            var opt2 = document.createElement('option');
+            opt2.value = opt2.text = val2arr[j];
+            if (opt2.value == val2) {
+                opt2.selected = 'selected';
             }
+            this.select2.add(opt2);
         }
     }
 }
@@ -58,7 +75,7 @@ xzArea.prototype.selector = function(ident) {
 //初始化select
 xzArea.prototype.initSelects = function(){
     var selectAll = document.createElement('option');
-    selectAll.setAttribute('value','0');
+    selectAll.setAttribute('value','');
     selectAll.innerHTML = '全部';
     this.select1.appendChild(selectAll);
     this.select2.appendChild(selectAll.cloneNode(true));
