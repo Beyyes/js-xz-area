@@ -3,16 +3,16 @@
 
 # 使用方法
 
-  <select id="s1"></select>
-  <select id="s2"></select>
-  
-  <script src="xz-area.js"></script>
-  <script>
-  xzArea({
-    select1:"#s1",
-    select2:"#s2"
-  })
-  </script>
+    <select id="s1"></select>
+    <select id="s2"></select>
+    
+    <script src="xz-area.js"></script>
+    <script>
+    xzArea({
+      select1:"#s1",
+      select2:"#s2"
+    })
+    </script>
   
 # 说明
 
